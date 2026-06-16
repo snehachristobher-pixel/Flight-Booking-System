@@ -5,6 +5,7 @@ import { loginUser } from "../services/authService";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -15,15 +16,17 @@ function Login() {
         password,
       });
 
+      console.log("LOGIN RESPONSE:", data);
+
       localStorage.setItem("token", data.token);
 
-      alert("Login Successful");
+      localStorage.setItem("userName", data.user.name);
 
       navigate("/flights");
     } catch (error) {
       console.log(error);
 
-      alert("Invalid Email or Password");
+      setMessage("❌ Invalid Email or Password");
     }
   };
 
@@ -33,6 +36,12 @@ function Login() {
         <h1 className="text-3xl font-bold text-center text-blue-500 mb-6">
           Login ✈️
         </h1>
+
+        {message && (
+          <div className="bg-red-600 p-3 rounded-lg mb-4 text-white">
+            {message}
+          </div>
+        )}
 
         <div className="space-y-4">
           <input

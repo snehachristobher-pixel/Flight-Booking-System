@@ -4,11 +4,11 @@ function Navbar() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
+  const userName = localStorage.getItem("userName");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-
-    alert("Logged Out Successfully");
+    localStorage.removeItem("userName");
 
     navigate("/login");
   };
@@ -36,16 +36,28 @@ function Navbar() {
           </Link>
         </li>
 
-        {!token ? (
+        {token ? (
+          <>
+            <li className="text-green-400 font-semibold">
+              Welcome, {userName} 👋
+            </li>
+
+            <li>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 px-4 py-2 rounded hover:bg-red-700"
+              >
+                Logout
+              </button>
+            </li>
+          </>
+        ) : (
           <>
             <li>
               <Link to="/login" className="hover:text-blue-400">
                 Login
               </Link>
             </li>
-            <Link to="/dashboard" className="hover:text-blue-400">
-              Dashboard
-            </Link>
 
             <li>
               <Link
@@ -56,15 +68,6 @@ function Navbar() {
               </Link>
             </li>
           </>
-        ) : (
-          <li>
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 px-4 py-2 rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </li>
         )}
       </ul>
     </nav>

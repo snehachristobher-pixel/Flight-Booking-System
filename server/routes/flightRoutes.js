@@ -31,6 +31,10 @@ router.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       token,
+      user: {
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     res.status(500).json({
@@ -189,13 +193,23 @@ router.post("/bookings/final", auth, async (req, res) => {
 });
 router.post("/users", async (req, res) => {
   try {
-    const existingUser = await User.findOne({
+    const existingEmail = await User.findOne({
       email: req.body.email,
     });
 
-    if (existingUser) {
+    if (existingEmail) {
       return res.status(400).json({
         message: "Email already registered",
+      });
+    }
+
+    const existingName = await User.findOne({
+      name: req.body.name,
+    });
+
+    if (existingName) {
+      return res.status(400).json({
+        message: "Name already used. Try another name.",
       });
     }
 

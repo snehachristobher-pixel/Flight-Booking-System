@@ -4,6 +4,7 @@ import { registerUser } from "../services/authService";
 
 function Register() {
   const navigate = useNavigate();
+  const [success, setSuccess] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -23,12 +24,30 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setError("");
+    setSuccess("✅ Registration Successful! Redirecting to login...");
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    if (!passwordRegex.test(form.password)) {
+      setError(
+        "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number.",
+      );
+      return;
+    }
+
     try {
       await registerUser(form);
-
-      alert("Registration Successful!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
 
       navigate("/login");
+      {
+        success && (
+          <div className="bg-green-600 p-3 rounded mb-4">{success}</div>
+        );
+      }
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed");
     }
