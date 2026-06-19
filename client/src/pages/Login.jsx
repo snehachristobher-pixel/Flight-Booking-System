@@ -6,11 +6,17 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
+      setIsError(false);
+      setMessage("⏳ Logging in...");
+
       const data = await loginUser({
         email,
         password,
@@ -19,14 +25,20 @@ function Login() {
       console.log("LOGIN RESPONSE:", data);
 
       localStorage.setItem("token", data.token);
-
       localStorage.setItem("userName", data.user.name);
 
-      navigate("/flights");
+      setMessage(`✅ Welcome ${data.user.name}`);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
       console.log(error);
 
+      setIsError(true);
       setMessage("❌ Invalid Email or Password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,7 +50,11 @@ function Login() {
         </h1>
 
         {message && (
-          <div className="bg-red-600 p-3 rounded-lg mb-4 text-white">
+          <div
+            className={`p-3 rounded-lg mb-4 text-white ${
+              isError ? "bg-red-600" : "bg-green-600"
+            }`}
+          >
             {message}
           </div>
         )}
@@ -62,9 +78,10 @@ function Login() {
 
           <button
             onClick={handleLogin}
-            className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-semibold transition"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-semibold transition disabled:bg-slate-600"
           >
-            Login
+            {loading ? "Please Wait..." : "Login"}
           </button>
         </div>
 

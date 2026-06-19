@@ -4,7 +4,6 @@ import { registerUser } from "../services/authService";
 
 function Register() {
   const navigate = useNavigate();
-  const [success, setSuccess] = useState("");
 
   const [form, setForm] = useState({
     name: "",
@@ -13,6 +12,7 @@ function Register() {
   });
 
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setForm({
@@ -25,7 +25,7 @@ function Register() {
     e.preventDefault();
 
     setError("");
-    setSuccess("✅ Registration Successful! Redirecting to login...");
+    setSuccess("");
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
@@ -38,27 +38,41 @@ function Register() {
 
     try {
       await registerUser(form);
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
 
-      navigate("/login");
-      {
-        success && (
-          <div className="bg-green-600 p-3 rounded mb-4">{success}</div>
-        );
-      }
+      setSuccess("✅ Registration Successful! Please login to continue.");
+
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+      });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
-      <div className="bg-slate-900 p-8 rounded-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Create Account</h1>
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white px-4">
+      <div className="bg-slate-900 p-8 rounded-xl w-full max-w-md shadow-xl">
+        <h1 className="text-3xl font-bold mb-6 text-center text-blue-500">
+          Create Account ✈️
+        </h1>
 
-        {error && <div className="bg-red-600 p-3 rounded mb-4">{error}</div>}
+        {error && (
+          <div className="bg-red-600 p-3 rounded-lg mb-4 text-white">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="bg-green-600 p-3 rounded-lg mb-4 text-white">
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <input
@@ -67,7 +81,7 @@ function Register() {
             placeholder="Full Name"
             value={form.name}
             onChange={handleChange}
-            className="w-full p-3 mb-4 rounded bg-slate-800"
+            className="w-full p-3 mb-4 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:border-blue-500"
             required
           />
 
@@ -77,7 +91,7 @@ function Register() {
             placeholder="Email Address"
             value={form.email}
             onChange={handleChange}
-            className="w-full p-3 mb-4 rounded bg-slate-800"
+            className="w-full p-3 mb-4 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:border-blue-500"
             required
           />
 
@@ -87,21 +101,32 @@ function Register() {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
-            className="w-full p-3 mb-6 rounded bg-slate-800"
+            className="w-full p-3 rounded-lg bg-slate-800 text-white border border-slate-700 focus:outline-none focus:border-blue-500"
             required
           />
 
+          <p className="text-sm text-slate-400 mt-2 mb-4">
+            Password must contain:
+            <br />
+            • Minimum 8 characters
+            <br />
+            • 1 Uppercase letter
+            <br />
+            • 1 Lowercase letter
+            <br />• 1 Number
+          </p>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 py-3 rounded hover:bg-blue-700"
+            className="w-full bg-blue-600 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
           >
             Register
           </button>
         </form>
 
-        <p className="mt-4 text-center text-slate-400">
+        <p className="mt-6 text-center text-slate-400">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-400">
+          <Link to="/login" className="text-blue-400 hover:text-blue-300">
             Login
           </Link>
         </p>

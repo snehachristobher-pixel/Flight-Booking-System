@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 function Navbar() {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
   const userName = localStorage.getItem("userName");
+  const token = localStorage.getItem("token");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
