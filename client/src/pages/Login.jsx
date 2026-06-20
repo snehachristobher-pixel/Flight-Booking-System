@@ -26,6 +26,7 @@ function Login() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userName", data.user.name);
+      localStorage.setItem("userEmail", data.user.email);
 
       setMessage(`✅ Welcome ${data.user.name}`);
 

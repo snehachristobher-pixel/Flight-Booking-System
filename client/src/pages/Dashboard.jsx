@@ -9,6 +9,7 @@ function Dashboard() {
     const fetchStats = async () => {
       try {
         const data = await getDashboardStats();
+        console.log("DASHBOARD DATA:", data);
 
         setStats(data);
       } catch (error) {

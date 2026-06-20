@@ -4,11 +4,13 @@ function Navbar() {
   const navigate = useNavigate();
 
   const userName = localStorage.getItem("userName");
+  const userEmail = localStorage.getItem("userEmail");
   const token = localStorage.getItem("token");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
 
     navigate("/login");
   };
@@ -33,6 +35,21 @@ function Navbar() {
         <li>
           <Link to="/bookings" className="hover:text-blue-400">
             My Bookings
+          </Link>
+        </li>
+        <li>
+          <Link to="/profile" className="hover:text-blue-400">
+            Profile
+          </Link>
+        </li>
+        <li>
+          <Link to="/dashboard" className="hover:text-blue-400">
+            Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link to="/flight-status" className="hover:text-blue-400">
+            Flight Status
           </Link>
         </li>
 

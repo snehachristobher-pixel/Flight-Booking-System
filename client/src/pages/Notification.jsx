@@ -23,9 +23,16 @@ function Notification() {
 
           <div className="space-y-4">
             <p>✅ Payment Successful</p>
-            <p>✅ Confirmation Email Sent</p>
-            <p>✅ SMS Notification Sent</p>
-            <p>✅ Ticket Generated</p>
+
+            <p>📧 Booking Confirmation Email Generated</p>
+
+            <p>📱 SMS Notification Ready</p>
+
+            <p>🎫 E-Ticket Generated Successfully</p>
+
+            <p>✈️ Flight Status: On Time</p>
+
+            <p>🕒 Departure Reminder: 2 Hours Before Flight</p>
           </div>
         </div>
       </div>

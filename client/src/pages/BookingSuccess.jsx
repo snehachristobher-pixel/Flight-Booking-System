@@ -146,8 +146,7 @@ function BookingSuccess() {
             <div className="bg-green-900/30 border border-green-700 p-4 rounded-lg mb-6">
               ✅ Your e-ticket has been generated successfully.
               <br />
-              📧 Booking confirmation has been sent to:
-              <strong> {passenger?.email}</strong>
+              📄 You can download or print your ticket below.
             </div>
 
             {/* Passenger Details */}

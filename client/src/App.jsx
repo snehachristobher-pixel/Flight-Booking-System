@@ -17,6 +17,8 @@ import PaymentProcessing from "./pages/PaymentProcessing";
 import Notification from "./pages/Notification";
 import AdminDashboard from "./pages/AdminDashboard";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import FlightStatus from "./pages/FlightStatus";
 
 function App() {
   return (
@@ -118,6 +120,22 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/flight-status"
+        element={
+          <ProtectedRoute>
+            <FlightStatus />
           </ProtectedRoute>
         }
       />
