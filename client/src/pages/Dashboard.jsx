@@ -24,10 +24,10 @@ function Dashboard() {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-slate-950 text-white p-10">
+      <div className="min-h-screen bg-slate-950 text-white p-10 overflow-x-hidden">
         <h1 className="text-4xl font-bold mb-10">Dashboard Analytics 📊</h1>
 
-        <div className="grid md:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-6">
           <div className="bg-slate-900 p-6 rounded-xl text-center">
             <h2 className="text-3xl font-bold text-blue-400">
               {stats?.totalFlights || 0}
@@ -66,6 +66,21 @@ function Dashboard() {
             </h2>
 
             <p>Total Revenue</p>
+          </div>
+          <div className="bg-slate-900 p-6 rounded-xl text-center">
+            <h2 className="text-3xl font-bold text-purple-400">
+              ₹{stats?.averageBookingValue || 0}
+            </h2>
+
+            <p>Average Booking Value</p>
+          </div>
+
+          <div className="bg-slate-900 p-6 rounded-xl text-center">
+            <h2 className="text-3xl font-bold text-pink-400">
+              {stats?.cancellationRate || 0}%
+            </h2>
+
+            <p>Cancellation Rate</p>
           </div>
         </div>
       </div>

@@ -16,10 +16,10 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between px-10 py-5 border-b border-slate-800 bg-slate-950 text-white">
+    <nav className="w-full overflow-x-auto flex items-center justify-between px-6 py-5 border-b border-slate-800 bg-slate-950 text-white">
       <h1 className="text-3xl font-bold text-blue-500">SkyJourney ✈️</h1>
 
-      <ul className="flex gap-8 font-medium items-center">
+      <ul className="flex gap-6 font-medium items-center whitespace-nowrap">
         <li>
           <Link to="/" className="hover:text-blue-400">
             Home

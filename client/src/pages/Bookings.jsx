@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
+  const [editingBooking, setEditingBooking] = useState(null);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
 
@@ -20,6 +21,19 @@ function Bookings() {
 
     fetchBookings();
   }, []);
+  const handleEdit = async (booking) => {
+    const newName = prompt("Enter Passenger Name", booking.passengerName);
+
+    if (!newName) return;
+
+    const updatedBookings = bookings.map((b) =>
+      b._id === booking._id ? { ...b, passengerName: newName } : b,
+    );
+
+    setBookings(updatedBookings);
+
+    setMessage("Booking updated successfully.");
+  };
 
   const handleDelete = async (id) => {
     const confirmCancel = window.confirm(
@@ -142,12 +156,21 @@ function Bookings() {
                   </p>
                 </div>
 
-                <button
-                  onClick={() => handleDelete(booking._id)}
-                  className="mt-6 bg-red-600 px-5 py-3 rounded-lg hover:bg-red-700 transition"
-                >
-                  Cancel Booking
-                </button>
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={() => handleEdit(booking)}
+                    className="bg-yellow-600 px-5 py-3 rounded-lg hover:bg-yellow-700 transition"
+                  >
+                    Edit Booking
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(booking._id)}
+                    className="bg-red-600 px-5 py-3 rounded-lg hover:bg-red-700 transition"
+                  >
+                    Cancel Booking
+                  </button>
+                </div>
               </div>
             ))}
           </div>
