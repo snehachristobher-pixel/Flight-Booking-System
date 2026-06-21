@@ -286,12 +286,22 @@ router.get("/dashboard", async (req, res) => {
 
     const totalRevenue = bookings.length * 5000;
 
+    const averageBookingValue =
+      totalBookings > 0 ? Math.round(totalRevenue / totalBookings) : 0;
+
+    const cancellationRate =
+      totalBookings > 0
+        ? ((cancelledBookings / totalBookings) * 100).toFixed(2)
+        : 0;
+
     res.json({
       totalFlights,
       totalBookings,
       confirmedBookings,
       cancelledBookings,
       totalRevenue,
+      averageBookingValue,
+      cancellationRate,
     });
   } catch (error) {
     res.status(500).json({
@@ -299,5 +309,21 @@ router.get("/dashboard", async (req, res) => {
     });
   }
 });
+router.get("/test-email", async (req, res) => {
+  try {
+    await sendEmail(
+      "rock01kins@gmail.com",
+      "TEST123",
+      "Sneha"
+    );
 
+    res.json({
+      message: "Email sent successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 module.exports = router;
