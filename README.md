@@ -3,55 +3,62 @@
 ## Project Overview
 
 A full-stack MERN Flight Booking and Reservation System that allows users to search flights, book tickets, manage reservations, download tickets, and receive booking confirmation emails.
+Email confirmation implemented using Nodemailer + Gmail SMTP.
+
+Works successfully in local environment.
+Render free-tier may restrict SMTP connections, which can prevent email delivery in deployed mode.
+
+Flight search uses internal airline database (MongoDB).
+Real-time status updates use AviationStack API.
 
 ## Tech Stack
 
-* MongoDB Atlas
-* Express.js
-* React.js
-* Node.js
-* Tailwind CSS
-* JWT Authentication
-* Nodemailer
-* Render
-* Netlify
+- MongoDB Atlas
+- Express.js
+- React.js
+- Node.js
+- Tailwind CSS
+- JWT Authentication
+- Nodemailer
+- Render
+- Netlify
 
 ## Features
 
 ### User Authentication
 
-* User Registration
-* User Login
-* Protected Routes
-* JWT Authentication
+- User Registration
+- User Login
+- Protected Routes
+- JWT Authentication
 
 ### Flight Search
 
-* Search flights by source and destination
-* View flight details
-* Seat availability tracking
+- Search flights by source and destination
+- View flight details
+- Seat availability tracking
 
 ### Booking System
 
-* Passenger details form
-* Seat preference selection
-* Booking review page
-* Payment simulation
+- Passenger details form
+- Seat preference selection
+- Booking review page
+- Payment simulation
 
 ### Booking Management
 
-* View bookings
-* Cancel bookings
-* Booking history
+- View bookings
+- Cancel bookings
+- Booking history
 
 ### Ticket Generation
 
-* Download PDF ticket
-* Print ticket
+- Download PDF ticket
+- Print ticket
 
 ### Notifications
 
-* Email booking confirmation
+- Email booking confirmation
 
 ## Demo Credentials
 
