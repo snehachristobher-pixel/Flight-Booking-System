@@ -88,78 +88,82 @@ function Navbar() {
       </div>
 
       {menuOpen && (
-        <ul className="md:hidden flex flex-col gap-4 px-6 pb-6">
-          <li>
-            <Link to="/" onClick={() => setMenuOpen(false)}>
-              Home
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/flights" onClick={() => setMenuOpen(false)}>
-              Flights
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/bookings" onClick={() => setMenuOpen(false)}>
-              My Bookings
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/profile" onClick={() => setMenuOpen(false)}>
-              Profile
-            </Link>
-          </li>
-
-          {role === "admin" && (
+        <div className="md:hidden bg-slate-900 border-t border-slate-800">
+          <ul className="flex flex-col items-center gap-5 py-6">
             <li>
-              <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
-                Dashboard
+              <Link to="/" onClick={() => setMenuOpen(false)}>
+                Home
               </Link>
             </li>
-          )}
 
-          <li>
-            <Link to="/flight-status" onClick={() => setMenuOpen(false)}>
-              Flight Status
-            </Link>
-          </li>
+            <li>
+              <Link to="/flights" onClick={() => setMenuOpen(false)}>
+                Flights
+              </Link>
+            </li>
 
-          {token ? (
-            <>
-              <li className="text-green-400">Welcome, {userName}</li>
+            <li>
+              <Link to="/bookings" onClick={() => setMenuOpen(false)}>
+                My Bookings
+              </Link>
+            </li>
 
+            <li>
+              <Link to="/profile" onClick={() => setMenuOpen(false)}>
+                Profile
+              </Link>
+            </li>
+
+            {role === "admin" && (
               <li>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-600 px-4 py-2 rounded"
-                >
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to="/login" onClick={() => setMenuOpen(false)}>
-                  Login
+                <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
+                  Dashboard
                 </Link>
               </li>
+            )}
 
-              <li>
-                <Link
-                  to="/register"
-                  onClick={() => setMenuOpen(false)}
-                  className="bg-blue-600 px-4 py-2 rounded inline-block"
-                >
-                  Register
-                </Link>
-              </li>
-            </>
-          )}
-        </ul>
+            <li>
+              <Link to="/flight-status" onClick={() => setMenuOpen(false)}>
+                Flight Status
+              </Link>
+            </li>
+
+            {token ? (
+              <>
+                <li className="text-green-400 font-semibold">
+                  Welcome, {userName}
+                </li>
+
+                <li className="w-48">
+                  <button
+                    onClick={handleLogout}
+                    className="bg-red-600 hover:bg-red-700 w-full py-2 rounded"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login" onClick={() => setMenuOpen(false)}>
+                    Login
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    to="/register"
+                    onClick={() => setMenuOpen(false)}
+                    className="bg-blue-600 px-4 py-2 rounded"
+                  >
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
       )}
     </nav>
   );

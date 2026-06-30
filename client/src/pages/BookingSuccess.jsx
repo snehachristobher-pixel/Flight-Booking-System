@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import Navbar from "../components/Navbar";
-
+import QRCode from "qrcode";
 import { createFinalBooking } from "../services/bookingService";
 import { reduceSeatCount } from "../services/flightService";
 
@@ -70,8 +70,17 @@ function BookingSuccess() {
     window.print();
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     const doc = new jsPDF();
+    const qrData = `
+Booking ID: ${bookingId}
+Passenger: ${passenger?.name}
+Airline: ${flight?.airline}
+Seat: ${passenger?.selectedSeat}
+Status: Confirmed
+`;
+
+    const qrImage = await QRCode.toDataURL(qrData);
 
     doc.setFontSize(20);
     doc.text("SkyJourney Flight Ticket", 20, 20);
@@ -99,10 +108,15 @@ function BookingSuccess() {
     doc.text(`Arrival: ${flight?.arrivalTime || "-"}`, 20, 150);
     doc.text(`Duration: ${flight?.duration || "-"}`, 20, 160);
 
-    doc.text("Payment Status: Paid", 20, 170);
+    doc.setTextColor(0, 128, 0);
+    doc.text("Payment Status: PAID ✓", 20, 170);
+    doc.setTextColor(0, 0, 0);
 
     doc.text(`Generated On: ${new Date().toLocaleString()}`, 20, 180);
+    doc.addImage(qrImage, "PNG", 140, 30, 40, 40);
 
+    doc.setFontSize(10);
+    doc.text("Scan QR for Ticket Details", 125, 75);
     doc.save(`Ticket-${bookingId}.pdf`);
   };
 

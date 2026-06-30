@@ -7,3 +7,8 @@ export const getDashboardStats = async () => {
 
   return response.data;
 };
+export const getRecentBookings = async () => {
+  const response = await axios.get(`${API_URL}/dashboard/bookings`);
+
+  return response.data;
+};

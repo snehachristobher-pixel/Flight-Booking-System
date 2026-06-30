@@ -19,6 +19,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 import Profile from "./pages/Profile";
 import FlightStatus from "./pages/FlightStatus";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 function App() {
   return (
@@ -115,7 +116,14 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="/dashboard" element={<AdminDashboard />} />
+      <Route
+        path="/dashboard"
+        element={
+          <AdminProtectedRoute>
+            <AdminDashboard />
+          </AdminProtectedRoute>
+        }
+      />
       <Route
         path="/profile"
         element={

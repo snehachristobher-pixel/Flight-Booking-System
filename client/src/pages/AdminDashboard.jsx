@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { getFlights } from "../services/flightService";
-import { getDashboardStats } from "../services/dashboardService";
+import {
+  getDashboardStats,
+  getRecentBookings,
+} from "../services/dashboardService";
 import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
   const [totalFlights, setTotalFlights] = useState(0);
   const [totalBookings, setTotalBookings] = useState(0);
+  const [recentBookings, setRecentBookings] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [confirmedBookings, setConfirmedBookings] = useState(0);
@@ -23,6 +27,9 @@ function AdminDashboard() {
     const fetchDashboardData = async () => {
       try {
         const stats = await getDashboardStats();
+        const bookings = await getRecentBookings();
+
+        setRecentBookings(bookings);
         console.log("DASHBOARD STATS:", stats);
 
         setTotalFlights(stats.totalFlights);
@@ -83,6 +90,44 @@ function AdminDashboard() {
 
             <p className="text-4xl mt-4 text-red-400">{cancelledBookings}</p>
           </div>
+        </div>
+        <div className="bg-slate-900 p-6 rounded-xl mt-8 overflow-x-auto">
+          <h2 className="text-2xl font-bold mb-4">Recent Bookings ✈️</h2>
+
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-slate-700">
+                <th className="p-3">Booking ID</th>
+                <th className="p-3">Passenger</th>
+                <th className="p-3">Seat</th>
+                <th className="p-3">Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {recentBookings.map((booking) => (
+                <tr key={booking._id} className="border-b border-slate-800">
+                  <td className="p-3">{booking.bookingId}</td>
+
+                  <td className="p-3">{booking.passengerName}</td>
+
+                  <td className="p-3">{booking.seatNumber}</td>
+
+                  <td className="p-3">
+                    <span
+                      className={
+                        booking.status === "Confirmed"
+                          ? "text-green-400"
+                          : "text-red-400"
+                      }
+                    >
+                      {booking.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </>

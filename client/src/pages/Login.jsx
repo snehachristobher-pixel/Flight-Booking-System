@@ -30,7 +30,15 @@ function Login() {
       console.log("Selected Role:", role);
       console.log("Entered Email:", email);
       console.log("Entered Password:", password);
-      localStorage.setItem("role", "admin");
+      if (
+        role === "admin" &&
+        email === "admin@skyjourney.com" &&
+        password === "Admin123"
+      ) {
+        localStorage.setItem("role", "admin");
+      } else {
+        localStorage.setItem("role", "user");
+      }
 
       setMessage(`✅ Welcome ${data.user.name}`);
 
