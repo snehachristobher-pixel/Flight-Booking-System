@@ -6,6 +6,11 @@ function FlightDetails() {
   const navigate = useNavigate();
 
   const [flight, setFlight] = useState(null);
+  const getFareCategory = (price) => {
+    if (price <= 4000) return "Budget Fare 💚";
+    if (price <= 7000) return "Standard Fare 💙";
+    return "Premium Fare 💎";
+  };
 
   useEffect(() => {
     const storedFlight = localStorage.getItem("selectedFlight");
@@ -112,6 +117,22 @@ function FlightDetails() {
               <p>Flight ID: {flight._id}</p>
 
               <p>Airline: {flight.airline}</p>
+            </div>
+            <div className="bg-green-900/30 border border-green-700 p-5 rounded-lg mt-6">
+              <h3 className="font-bold text-lg mb-3">Fare Comparison 💰</h3>
+
+              <p className="mb-2">
+                <strong>Current Fare:</strong> ₹{flight.price}
+              </p>
+
+              <p className="mb-2">
+                <strong>Fare Category:</strong> {getFareCategory(flight.price)}
+              </p>
+
+              <p>
+                This fare has been automatically classified based on the ticket
+                price for easier comparison.
+              </p>
             </div>
 
             <div className="bg-blue-900/30 border border-blue-700 p-4 rounded-lg mt-6">

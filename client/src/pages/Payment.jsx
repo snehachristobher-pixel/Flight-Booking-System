@@ -261,15 +261,22 @@ function Payment() {
               <p className="mb-3">
                 <strong>Arrival:</strong> {flight?.arrivalTime || "-"}
               </p>
+              <p className="mb-3">
+                <strong>Base Fare:</strong> ₹{flight?.price || 0}
+              </p>
+
+              <p className="mb-3">
+                <strong>Taxes & Fees:</strong> ₹500
+              </p>
 
               <hr className="my-4 border-slate-700" />
 
               <h3 className="text-3xl font-bold text-green-400">
-                ₹{flight?.price || 0}
+                ₹{(flight?.price || 0) + 500}
               </h3>
 
               <p className="text-slate-400 text-sm mt-2">
-                Inclusive of taxes and service charges.
+                Total payable amount including taxes.
               </p>
             </div>
           </div>

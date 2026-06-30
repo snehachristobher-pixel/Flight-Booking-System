@@ -16,7 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PaymentProcessing from "./pages/PaymentProcessing";
 import Notification from "./pages/Notification";
 import AdminDashboard from "./pages/AdminDashboard";
-import Dashboard from "./pages/Dashboard";
+
 import Profile from "./pages/Profile";
 import FlightStatus from "./pages/FlightStatus";
 
@@ -115,14 +115,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/dashboard" element={<AdminDashboard />} />
       <Route
         path="/profile"
         element={

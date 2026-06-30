@@ -1,6 +1,44 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import { getFlights } from "../services/flightService";
+import { getDashboardStats } from "../services/dashboardService";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
+  const [totalFlights, setTotalFlights] = useState(0);
+  const [totalBookings, setTotalBookings] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [confirmedBookings, setConfirmedBookings] = useState(0);
+  const [cancelledBookings, setCancelledBookings] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isAdmin = localStorage.getItem("role");
+
+    if (isAdmin !== "admin") {
+      navigate("/");
+      return;
+    }
+    const fetchDashboardData = async () => {
+      try {
+        const stats = await getDashboardStats();
+        console.log("DASHBOARD STATS:", stats);
+
+        setTotalFlights(stats.totalFlights);
+        setTotalBookings(stats.totalBookings);
+        setTotalUsers(stats.totalUsers);
+        setTotalRevenue(stats.totalRevenue);
+        setConfirmedBookings(stats.confirmedBookings);
+        setCancelledBookings(stats.cancelledBookings);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDashboardData();
+  }, [navigate]);
+
   return (
     <>
       <Navbar />
@@ -12,35 +50,39 @@ function AdminDashboard() {
           <div className="bg-slate-900 p-8 rounded-xl">
             <h2 className="text-xl font-bold">Total Flights</h2>
 
-            <p className="text-4xl mt-4 text-blue-400">--</p>
+            <p className="text-4xl mt-4 text-blue-400">{totalFlights}</p>
           </div>
 
           <div className="bg-slate-900 p-8 rounded-xl">
             <h2 className="text-xl font-bold">Total Bookings</h2>
 
-            <p className="text-4xl mt-4 text-green-400">--</p>
+            <p className="text-4xl mt-4 text-green-400">{totalBookings}</p>
           </div>
-
           <div className="bg-slate-900 p-8 rounded-xl">
             <h2 className="text-xl font-bold">Total Users</h2>
 
-            <p className="text-4xl mt-4 text-cyan-400">--</p>
+            <p className="text-4xl mt-4 text-yellow-400">{totalUsers}</p>
+          </div>
+
+          <div className="bg-slate-900 p-8 rounded-xl">
+            <h2 className="text-xl font-bold">Revenue</h2>
+
+            <p className="text-4xl mt-4 text-cyan-400">₹{totalRevenue}</p>
           </div>
         </div>
 
-        <div className="bg-slate-900 p-8 rounded-xl mt-8">
-          <h2 className="text-2xl font-bold mb-4">Project Features</h2>
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
+          <div className="bg-slate-900 p-8 rounded-xl">
+            <h2 className="text-xl font-bold">Confirmed Bookings</h2>
 
-          <ul className="space-y-2 text-slate-300">
-            <li>✅ User Authentication</li>
-            <li>✅ Flight Search</li>
-            <li>✅ Flight Booking</li>
-            <li>✅ Payment Module</li>
-            <li>✅ Email Notifications</li>
-            <li>✅ PDF Ticket Download</li>
-            <li>✅ Booking Management</li>
-            <li>✅ Flight Status Tracking</li>
-          </ul>
+            <p className="text-4xl mt-4 text-green-400">{confirmedBookings}</p>
+          </div>
+
+          <div className="bg-slate-900 p-8 rounded-xl">
+            <h2 className="text-xl font-bold">Cancelled Bookings</h2>
+
+            <p className="text-4xl mt-4 text-red-400">{cancelledBookings}</p>
+          </div>
         </div>
       </div>
     </>

@@ -191,6 +191,17 @@ router.post("/bookings/final", auth, async (req, res) => {
     });
   }
 });
+router.get("/dashboard/bookings", async (req, res) => {
+  try {
+    const bookings = await Booking.find().sort({ bookingDate: -1 }).limit(10);
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 router.post("/users", async (req, res) => {
   try {
     const existingEmail = await User.findOne({
@@ -273,6 +284,7 @@ router.get("/dashboard", async (req, res) => {
     const totalFlights = await Flight.countDocuments();
 
     const totalBookings = await Booking.countDocuments();
+    const totalUsers = await User.countDocuments();
 
     const confirmedBookings = await Booking.countDocuments({
       status: "Confirmed",
@@ -297,6 +309,7 @@ router.get("/dashboard", async (req, res) => {
     res.json({
       totalFlights,
       totalBookings,
+      totalUsers,
       confirmedBookings,
       cancelledBookings,
       totalRevenue,
@@ -311,11 +324,7 @@ router.get("/dashboard", async (req, res) => {
 });
 router.get("/test-email", async (req, res) => {
   try {
-    await sendEmail(
-      "rock01kins@gmail.com",
-      "TEST123",
-      "Sneha"
-    );
+    await sendEmail("rock01kins@gmail.com", "TEST123", "Sneha");
 
     res.json({
       message: "Email sent successfully",

@@ -52,7 +52,7 @@ function BookingSuccess() {
           seatPreference: passengerData.seatPreference,
 
           flightId: flightData._id,
-          seatNumber: "A1",
+          seatNumber: passengerData.selectedSeat,
         });
 
         await reduceSeatCount(flightData._id);
@@ -83,6 +83,7 @@ function BookingSuccess() {
     doc.text(`Email: ${passenger?.email || "-"}`, 20, 60);
     doc.text(`Phone: ${passenger?.phone || "-"}`, 20, 70);
     doc.text(`Seat Preference: ${passenger?.seatPreference || "-"}`, 20, 80);
+    doc.text(`Seat Number: ${passenger?.selectedSeat || "-"}`, 20, 90);
 
     doc.text(`Airline: ${flight?.airline || "-"}`, 20, 100);
 

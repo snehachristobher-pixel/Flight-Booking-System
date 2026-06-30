@@ -8,6 +8,7 @@ function Login() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [role, setRole] = useState("user");
 
   const navigate = useNavigate();
 
@@ -23,10 +24,13 @@ function Login() {
       });
 
       console.log("LOGIN RESPONSE:", data);
-
       localStorage.setItem("token", data.token);
       localStorage.setItem("userName", data.user.name);
       localStorage.setItem("userEmail", data.user.email);
+      console.log("Selected Role:", role);
+      console.log("Entered Email:", email);
+      console.log("Entered Password:", password);
+      localStorage.setItem("role", "admin");
 
       setMessage(`✅ Welcome ${data.user.name}`);
 
@@ -59,7 +63,18 @@ function Login() {
             {message}
           </div>
         )}
+        <div className="mb-4">
+          <label className="block mb-2 font-semibold">Login As</label>
 
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full p-3 rounded-lg bg-slate-800 text-white border border-slate-700"
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
         <div className="space-y-4">
           <input
             type="email"

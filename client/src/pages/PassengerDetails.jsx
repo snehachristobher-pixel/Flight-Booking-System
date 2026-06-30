@@ -14,8 +14,34 @@ function PassengerDetails() {
     email: "",
     phone: "",
     seatPreference: "",
+    selectedSeat: "",
   });
 
+  const seats = [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+  ];
+
+  const handleSeatSelect = (seat) => {
+    setForm({
+      ...form,
+      selectedSeat: seat,
+    });
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -48,7 +74,8 @@ function PassengerDetails() {
       !cleanedForm.gender ||
       !cleanedForm.email ||
       !cleanedForm.phone ||
-      !cleanedForm.seatPreference
+      !cleanedForm.seatPreference ||
+      !cleanedForm.selectedSeat
     ) {
       setError("Please complete all fields before proceeding.");
       return;
@@ -167,8 +194,36 @@ function PassengerDetails() {
                   <option value="Middle">Middle</option>
                 </select>
               </div>
-            </div>
 
+              <div className="md:col-span-2">
+                <label className="block mb-3 font-medium">
+                  Select Your Seat ✈️
+                </label>
+
+                <div className="grid grid-cols-4 gap-3">
+                  {seats.map((seat) => (
+                    <button
+                      key={seat}
+                      type="button"
+                      onClick={() => handleSeatSelect(seat)}
+                      className={`p-3 rounded-lg font-semibold transition ${
+                        form.selectedSeat === seat
+                          ? "bg-green-600 text-white"
+                          : "bg-slate-700 hover:bg-slate-600"
+                      }`}
+                    >
+                      {seat}
+                    </button>
+                  ))}
+                </div>
+
+                {form.selectedSeat && (
+                  <p className="mt-3 text-green-400">
+                    Selected Seat: {form.selectedSeat}
+                  </p>
+                )}
+              </div>
+            </div>
             <div className="mt-6">
               <label className="block mb-2 font-medium">Email Address</label>
 

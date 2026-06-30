@@ -9,6 +9,9 @@ function Flights() {
   const [flights, setFlights] = useState([]);
   const [sourceSearch, setSourceSearch] = useState("");
   const [destinationSearch, setDestinationSearch] = useState("");
+  const [airlineFilter, setAirlineFilter] = useState("");
+  const [classFilter, setClassFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -23,12 +26,28 @@ function Flights() {
     fetchFlights();
   }, []);
 
-  const filteredFlights = flights.filter((flight) => {
-    return (
-      flight.source.toLowerCase().includes(sourceSearch.toLowerCase()) &&
-      flight.destination.toLowerCase().includes(destinationSearch.toLowerCase())
-    );
-  });
+  const filteredFlights = flights
+    .filter((flight) => {
+      return (
+        flight.source.toLowerCase().includes(sourceSearch.toLowerCase()) &&
+        flight.destination
+          .toLowerCase()
+          .includes(destinationSearch.toLowerCase()) &&
+        (airlineFilter === "" || flight.airline === airlineFilter) &&
+        (classFilter === "" || flight.flightClass === classFilter)
+      );
+    })
+    .sort((a, b) => {
+      if (sortOrder === "lowToHigh") {
+        return a.price - b.price;
+      }
+
+      if (sortOrder === "highToLow") {
+        return b.price - a.price;
+      }
+
+      return 0;
+    });
 
   const handleViewDetails = (flight) => {
     localStorage.setItem("selectedFlight", JSON.stringify(flight));
@@ -61,6 +80,46 @@ function Flights() {
             <h2 className="text-xl font-bold mb-4">Search Flights</h2>
 
             <div className="flex flex-col md:flex-row gap-4">
+              <select
+                value={airlineFilter}
+                onChange={(e) => setAirlineFilter(e.target.value)}
+                className="bg-slate-800 border border-slate-700 p-3 rounded-lg w-full"
+              >
+                <option value="">All Airlines</option>
+
+                {[...new Set(flights.map((flight) => flight.airline))].map(
+                  (airline) => (
+                    <option key={airline} value={airline}>
+                      {airline}
+                    </option>
+                  ),
+                )}
+              </select>
+
+              <select
+                value={classFilter}
+                onChange={(e) => setClassFilter(e.target.value)}
+                className="bg-slate-800 border border-slate-700 p-3 rounded-lg w-full"
+              >
+                <option value="">All Classes</option>
+
+                <option value="Economy">Economy</option>
+
+                <option value="Business">Business</option>
+
+                <option value="First Class">First Class</option>
+              </select>
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="bg-slate-800 border border-slate-700 p-3 rounded-lg w-full"
+              >
+                <option value="">Sort By Price</option>
+
+                <option value="lowToHigh">Price: Low to High</option>
+
+                <option value="highToLow">Price: High to Low</option>
+              </select>
               <input
                 type="text"
                 placeholder="Departure City"

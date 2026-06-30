@@ -132,8 +132,12 @@ function ReviewBooking() {
                 <strong>Phone:</strong> {passenger.phone}
               </p>
 
-              <p>
+              <p className="mb-2">
                 <strong>Seat Preference:</strong> {passenger.seatPreference}
+              </p>
+
+              <p>
+                <strong>Selected Seat:</strong> {passenger.selectedSeat}
               </p>
             </div>
           </div>
