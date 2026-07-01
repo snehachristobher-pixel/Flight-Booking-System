@@ -49,3 +49,14 @@ export const deleteBooking = async (id) => {
 
   return response.data;
 };
+export const updateBooking = async (id, bookingData) => {
+  const token = localStorage.getItem("token");
+
+  const response = await axios.put(`${API_URL}/bookings/${id}`, bookingData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};

@@ -21,20 +21,16 @@ function Login() {
       const data = await loginUser({
         email,
         password,
+        role,
       });
 
       console.log("LOGIN RESPONSE:", data);
       localStorage.setItem("token", data.token);
       localStorage.setItem("userName", data.user.name);
       localStorage.setItem("userEmail", data.user.email);
+      localStorage.setItem("role", data.user.role);
       console.log("Selected Role:", role);
-      console.log("Entered Email:", email);
-      console.log("Entered Password:", password);
-      if (
-        role === "admin" &&
-        email === "admin@skyjourney.com" &&
-        password === "Admin123"
-      ) {
+      if (role === "admin") {
         localStorage.setItem("role", "admin");
       } else {
         localStorage.setItem("role", "user");

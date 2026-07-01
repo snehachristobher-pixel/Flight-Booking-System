@@ -34,6 +34,7 @@ router.post("/login", async (req, res) => {
       user: {
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -144,13 +145,13 @@ router.put("/bookings/:id", auth, async (req, res) => {
       req.params.id,
       {
         passengerName: req.body.passengerName,
+        phone: req.body.phone,
         flightId: req.body.flightId,
         seatNumber: req.body.seatNumber,
         status: req.body.status,
       },
       { new: true },
     );
-
     res.status(200).json(updatedBooking);
   } catch (error) {
     res.status(500).json({
@@ -228,6 +229,7 @@ router.post("/users", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
+      role: "user",
     });
 
     res.status(201).json({

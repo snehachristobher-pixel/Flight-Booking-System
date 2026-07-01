@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Flights from "./pages/Flights";
 import Bookings from "./pages/Bookings";
+import EditBooking from "./pages/EditBooking";
 
 import FlightDetails from "./pages/FlightDetails";
 import PassengerDetails from "./pages/PassengerDetails";
@@ -140,6 +141,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/edit-booking/:id" element={<EditBooking />} />
     </Routes>
   );
 }

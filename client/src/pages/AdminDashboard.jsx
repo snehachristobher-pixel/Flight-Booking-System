@@ -15,22 +15,31 @@ function AdminDashboard() {
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [confirmedBookings, setConfirmedBookings] = useState(0);
   const [cancelledBookings, setCancelledBookings] = useState(0);
+  const [averageBookingValue, setAverageBookingValue] = useState(0);
+  const [cancellationRate, setCancellationRate] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("ROLE:", localStorage.getItem("role"));
+
     const isAdmin = localStorage.getItem("role");
 
     if (isAdmin !== "admin") {
+      console.log("REDIRECTING TO HOME");
       navigate("/");
       return;
     }
+
+    console.log("ADMIN VERIFIED");
+
     const fetchDashboardData = async () => {
       try {
         const stats = await getDashboardStats();
         const bookings = await getRecentBookings();
 
+        console.log("STATS:", stats);
+
         setRecentBookings(bookings);
-        console.log("DASHBOARD STATS:", stats);
 
         setTotalFlights(stats.totalFlights);
         setTotalBookings(stats.totalBookings);
@@ -38,8 +47,10 @@ function AdminDashboard() {
         setTotalRevenue(stats.totalRevenue);
         setConfirmedBookings(stats.confirmedBookings);
         setCancelledBookings(stats.cancelledBookings);
+        setAverageBookingValue(stats.averageBookingValue);
+        setCancellationRate(stats.cancellationRate);
       } catch (error) {
-        console.log(error);
+        console.log("ERROR:", error);
       }
     };
 
@@ -89,6 +100,21 @@ function AdminDashboard() {
             <h2 className="text-xl font-bold">Cancelled Bookings</h2>
 
             <p className="text-4xl mt-4 text-red-400">{cancelledBookings}</p>
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
+          <div className="bg-slate-900 p-8 rounded-xl">
+            <h2 className="text-xl font-bold">Average Booking Value</h2>
+
+            <p className="text-4xl mt-4 text-purple-400">
+              ₹{averageBookingValue}
+            </p>
+          </div>
+
+          <div className="bg-slate-900 p-8 rounded-xl">
+            <h2 className="text-xl font-bold">Cancellation Rate</h2>
+
+            <p className="text-4xl mt-4 text-orange-400">{cancellationRate}%</p>
           </div>
         </div>
         <div className="bg-slate-900 p-6 rounded-xl mt-8 overflow-x-auto">

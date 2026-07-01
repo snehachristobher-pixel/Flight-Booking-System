@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { getBookings, deleteBooking } from "../services/bookingService";
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
   const [editingBooking, setEditingBooking] = useState(null);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -35,19 +38,18 @@ function Bookings() {
     setMessage("Booking updated successfully.");
   };
 
-  const handleDelete = async (id) => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this booking?",
-    );
-
-    if (!confirmCancel) return;
-
+  const handleDelete = async () => {
     try {
-      await deleteBooking(id);
+      await deleteBooking(selectedBookingId);
 
-      setBookings(bookings.filter((booking) => booking._id !== id));
+      setBookings(
+        bookings.filter((booking) => booking._id !== selectedBookingId),
+      );
 
       setMessage("Booking cancelled successfully.");
+
+      setShowCancelModal(false);
+      setSelectedBookingId(null);
     } catch (error) {
       console.log(error);
       setMessage("Failed to cancel booking.");
@@ -157,15 +159,19 @@ function Bookings() {
                 </div>
 
                 <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={() => handleEdit(booking)}
+                  <Link
+                    to={`/edit-booking/${booking._id}`}
+                    state={{ booking }}
                     className="bg-yellow-600 px-5 py-3 rounded-lg hover:bg-yellow-700 transition"
                   >
                     Edit Booking
-                  </button>
+                  </Link>
 
                   <button
-                    onClick={() => handleDelete(booking._id)}
+                    onClick={() => {
+                      setSelectedBookingId(booking._id);
+                      setShowCancelModal(true);
+                    }}
                     className="bg-red-600 px-5 py-3 rounded-lg hover:bg-red-700 transition"
                   >
                     Cancel Booking
@@ -176,6 +182,36 @@ function Bookings() {
           </div>
         )}
       </div>
+      {showCancelModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white text-black p-8 rounded-xl w-96 shadow-2xl">
+            <h2 className="text-2xl font-bold mb-4">Cancel Booking</h2>
+
+            <p className="mb-6">
+              Are you sure you want to cancel this booking?
+            </p>
+
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => {
+                  setShowCancelModal(false);
+                  setSelectedBookingId(null);
+                }}
+                className="bg-gray-300 px-4 py-2 rounded"
+              >
+                No
+              </button>
+
+              <button
+                onClick={handleDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded"
+              >
+                Yes, Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
