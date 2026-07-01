@@ -70,6 +70,22 @@ password123
 
 (Or register a new account)
 
+## 🔑 Evaluator Access
+
+To test the Admin Dashboard and admin functionalities, use the following credentials:
+
+### Admin Login
+
+Email: admin@gmail.com
+
+Password: Admin123
+
+### User Login
+
+Users can register a new account and access all booking features.
+
+> Admin account can be used to test Dashboard Analytics, Booking Statistics, Revenue Tracking, and Admin Features.
+
 ## Frontend Deployment
 
 https://flightbookingsystem-skyjourney.netlify.app
