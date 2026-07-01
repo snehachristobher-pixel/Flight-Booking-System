@@ -1,16 +1,207 @@
-# React + Vite
+# ✈️ SkyJourney - Flight Booking & Reservation System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack Flight Booking and Reservation System built using the MERN Stack. Users can search flights, compare fares, select seats, make bookings, manage reservations, download tickets, and receive booking confirmations.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Frontend
 
-## React Compiler
+https://flightbookingsystem-skyjourney.netlify.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend
 
-## Expanding the ESLint configuration
+https://flight-booking-system-rcgo.onrender.com
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### GitHub Repository
+
+https://github.com/snehachristobher-pixel/Flight-Booking-System
+
+---
+
+## 📌 Features
+
+### User Features
+
+- User Registration & Login
+- JWT Authentication
+- Flight Search
+- Flight Filters
+- Flight Sorting
+- Fare Comparison
+- Flight Details View
+- Seat Selection
+- Passenger Details Form
+- Payment Workflow
+- Booking Confirmation
+- Booking History
+- Edit Booking
+- Cancel Booking
+- Profile Management
+- Flight Status Tracking
+- Download Ticket PDF
+- Print Ticket
+- QR Code Ticket Verification
+- Email Confirmation
+
+---
+
+### Admin Features
+
+- Admin Login
+- Dashboard Analytics
+- Total Flights
+- Total Bookings
+- Total Users
+- Revenue Tracking
+- Confirmed Bookings
+- Cancelled Bookings
+- Average Booking Value
+- Cancellation Rate
+- Recent Bookings Overview
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- React.js
+- React Router DOM
+- Axios
+- Tailwind CSS
+- Vite
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+
+### Additional Libraries
+
+- jsPDF
+- QRCode
+- Nodemailer
+
+---
+
+## 📂 Project Structure
+
+Frontend
+
+src/
+├── components/
+├── pages/
+├── services/
+├── routes/
+
+Backend
+
+server/
+├── models/
+├── routes/
+├── middleware/
+├── config/
+
+---
+
+## 📊 Dashboard Analytics
+
+The Admin Dashboard provides:
+
+- Total Flights
+- Total Bookings
+- Total Users
+- Revenue
+- Confirmed Bookings
+- Cancelled Bookings
+- Average Booking Value
+- Cancellation Rate
+
+---
+
+## 🔐 Authentication
+
+The system supports:
+
+- User Login
+- Admin Login
+- Protected Routes
+- JWT-based Authentication
+
+---
+
+## 🎫 Ticket Features
+
+- Ticket PDF Generation
+- Ticket Printing
+- QR Code Generation
+- Booking Reference Number
+
+---
+
+## 📧 Notifications
+
+- Booking Confirmation Email
+- Payment Confirmation
+- Booking Status Updates
+
+---
+
+## ⚙️ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/snehachristobher-pixel/Flight-Booking-System.git
+```
+
+### Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+### Backend
+
+```bash
+cd server
+npm install
+npm start
+```
+
+---
+
+## 🔑 Evaluator Access
+
+To test the Admin Dashboard and admin functionalities, use the following credentials:
+
+### Admin Login
+
+Email: admin@gmail.com
+
+Password: Admin123
+
+### User Login
+
+Users can register a new account and access all booking features.
+
+> Admin account can be used to test Dashboard Analytics, Booking Statistics, Revenue Tracking, and Admin Features.
+
+---
+
+## 👩‍💻 Author
+
+Sneha Christobher
+
+Full Stack Developer (MERN Stack)
+
+---
+
+## 📜 License
+
+This project is developed for educational and assessment purposes.
