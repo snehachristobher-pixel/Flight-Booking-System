@@ -146,7 +146,41 @@ The system supports:
 
 - Booking Confirmation Email
 - Payment Confirmation
-- Booking Status Updates
+- Booking Status Updates 
+
+## Features
+
+### User Features
+- User Registration & Login
+- Flight Search & Filtering
+- Sort Flights by Price
+- Flight Details View
+- Multi-Passenger Booking
+- Seat Selection
+- Seat Availability Tracking
+- Flight Status Tracking
+- Review Booking
+- Razorpay Payment Gateway Integration
+- QR Code E-Ticket Generation
+- PDF Ticket Download
+- Email Booking Confirmation
+- Booking Management (View, Edit, Cancel)
+
+### Admin Features
+- Admin Login
+- Admin Dashboard
+- Total Flights Analytics
+- Total Bookings Analytics
+- Total Revenue Analytics
+- User Statistics
+- Recent Bookings Monitoring
+
+### Additional Features
+- JWT Authentication
+- Protected Routes
+- MongoDB Atlas Database
+- Responsive UI
+- Real-Time Seat Availability Updates
 
 ---
 
