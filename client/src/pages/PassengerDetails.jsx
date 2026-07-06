@@ -15,6 +15,7 @@ function PassengerDetails() {
     phone: "",
     seatPreference: "",
     selectedSeat: "",
+    passengerCount: 1,
   });
 
   const seats = [
@@ -153,6 +154,24 @@ function PassengerDetails() {
                   onChange={handleChange}
                   className="w-full p-3 rounded bg-slate-800"
                 />
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">
+                  Number of Passengers
+                </label>
+
+                <select
+                  name="passengerCount"
+                  value={form.passengerCount}
+                  onChange={handleChange}
+                  className="w-full p-3 rounded bg-slate-800"
+                >
+                  <option value="1">1 Passenger</option>
+                  <option value="2">2 Passengers</option>
+                  <option value="3">3 Passengers</option>
+                  <option value="4">4 Passengers</option>
+                  <option value="5">5 Passengers</option>
+                </select>
               </div>
 
               <div>

@@ -4,12 +4,13 @@ const express = require("express");
 const connectDB = require("./config/db");
 const flightRoutes = require("./routes/flightRoutes");
 const cors = require("cors");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api", flightRoutes);
-
+app.use("/api/payment", paymentRoutes);
 connectDB();
 
 app.get("/", (req, res) => {

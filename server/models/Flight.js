@@ -50,6 +50,10 @@ const flightSchema = new mongoose.Schema({
     type: String,
     default: "Economy",
   },
+  status: {
+    type: String,
+    default: "On Time",
+  },
 
   airlineLogo: {
     type: String,

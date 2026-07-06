@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 function Payment() {
   const navigate = useNavigate();
@@ -33,6 +34,46 @@ function Payment() {
       [e.target.name]: e.target.value,
     });
   };
+  const handleRazorpayPayment = async () => {
+    try {
+      const amount = (flight?.price || 0) + 500;
+
+      const { data } = await axios.post(
+        "http://localhost:5000/api/payment/create-order",
+        {
+          amount,
+        },
+      );
+
+      const options = {
+        key: "rzp_test_TA6GKnKnJgOjDk",
+        amount: data.amount,
+        currency: data.currency,
+        name: "SkyJourney",
+        description: "Flight Booking Payment",
+        order_id: data.id,
+
+        handler: function () {
+          navigate("/payment-processing");
+        },
+
+        prefill: {
+          name: "Customer",
+          email: "customer@example.com",
+        },
+
+        theme: {
+          color: "#16a34a",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.log(error);
+      alert("Payment failed");
+    }
+  };
 
   const handlePayment = () => {
     if (!paymentMethod) {
@@ -63,7 +104,7 @@ function Payment() {
 
     setError("");
 
-    navigate("/payment-processing");
+    handleRazorpayPayment();
   };
 
   return (

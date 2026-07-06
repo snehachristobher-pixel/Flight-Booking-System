@@ -50,6 +50,11 @@ function Flights() {
     });
 
   const handleViewDetails = (flight) => {
+    if (flight.seatsAvailable <= 0) {
+      alert("This flight is sold out.");
+      return;
+    }
+
     localStorage.setItem("selectedFlight", JSON.stringify(flight));
 
     navigate("/flight-details");
@@ -150,11 +155,13 @@ function Flights() {
 
                   <span
                     className={`px-3 py-1 rounded-full text-sm ${
-                      flight.status === "Delayed"
-                        ? "bg-yellow-600"
-                        : flight.status === "Cancelled"
-                          ? "bg-red-600"
-                          : "bg-green-600"
+                      flight.status === "Boarding"
+                        ? "bg-blue-600"
+                        : flight.status === "Delayed"
+                          ? "bg-yellow-600"
+                          : flight.status === "Cancelled"
+                            ? "bg-red-600"
+                            : "bg-green-600"
                     }`}
                   >
                     {flight.status || "On Time"}
@@ -170,7 +177,15 @@ function Flights() {
                 </p>
 
                 <div className="space-y-2 text-slate-300">
-                  <p>🪑 Seats Available: {flight.seatsAvailable}</p>
+                  <p className="font-semibold">
+                    🪑 Seats Available: {flight.seatsAvailable}
+                  </p>
+
+                  {flight.seatsAvailable <= 5 && flight.seatsAvailable > 0 && (
+                    <p className="text-yellow-400 font-bold">
+                      ⚠️ Hurry! Only {flight.seatsAvailable} seats left
+                    </p>
+                  )}
 
                   <p>
                     🕒 {flight.departureTime} - {flight.arrivalTime}
@@ -181,12 +196,21 @@ function Flights() {
                   <p>💺 Class: {flight.flightClass}</p>
                 </div>
 
-                <button
-                  onClick={() => handleViewDetails(flight)}
-                  className="mt-6 w-full bg-blue-600 py-3 rounded-lg hover:bg-blue-700 transition"
-                >
-                  View Details →
-                </button>
+                {flight.seatsAvailable > 0 ? (
+                  <button
+                    onClick={() => handleViewDetails(flight)}
+                    className="mt-6 w-full bg-blue-600 py-3 rounded-lg hover:bg-blue-700 transition"
+                  >
+                    View Details →
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="mt-6 w-full bg-red-600 py-3 rounded-lg cursor-not-allowed"
+                  >
+                    SOLD OUT
+                  </button>
+                )}
               </div>
             ))}
           </div>

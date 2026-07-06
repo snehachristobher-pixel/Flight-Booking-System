@@ -78,7 +78,20 @@ function ReviewBooking() {
               </p>
 
               <p className="mb-2">
-                <strong>Price:</strong> ₹{flight.price}
+                <strong>Base Fare:</strong> ₹{flight.price}
+              </p>
+
+              <p className="mb-2">
+                <strong>Passengers:</strong> {passenger.passengerCount}
+              </p>
+
+              <p className="mb-2">
+                <strong>Taxes & Fees:</strong> ₹500
+              </p>
+
+              <p className="mb-2 text-green-400 font-bold">
+                <strong>Total Fare:</strong> ₹
+                {flight.price * Number(passenger.passengerCount) + 500}
               </p>
 
               <p className="mb-2">
@@ -118,6 +131,9 @@ function ReviewBooking() {
 
               <p className="mb-2">
                 <strong>Age:</strong> {passenger.age}
+              </p>
+              <p className="mb-2">
+                <strong>Passengers:</strong> {passenger.passengerCount}
               </p>
 
               <p className="mb-2">
