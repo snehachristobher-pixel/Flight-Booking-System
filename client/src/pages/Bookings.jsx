@@ -58,8 +58,9 @@ function Bookings() {
 
   const filteredBookings = bookings.filter(
     (booking) =>
-      booking.passengerName?.toLowerCase().includes(search.toLowerCase()) ||
-      booking.bookingId?.toLowerCase().includes(search.toLowerCase()),
+      booking.passengers?.some((p) =>
+        p.name?.toLowerCase().includes(search.toLowerCase()),
+      ) || booking.bookingId?.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -106,9 +107,8 @@ function Bookings() {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-2xl font-bold">
-                    {booking.passengerName}
+                    {booking.passengers?.[0]?.name || "Passenger"}
                   </h2>
-
                   <span className="bg-blue-600 px-3 py-1 rounded-full text-sm">
                     {booking.bookingId || "N/A"}
                   </span>
@@ -119,9 +119,36 @@ function Bookings() {
                     <strong>Flight ID:</strong> {booking.flightId}
                   </p>
 
-                  <p>
-                    <strong>Seat Number:</strong> {booking.seatNumber}
-                  </p>
+                  <div className="mt-3">
+                    <strong>Passengers:</strong>
+
+                    {booking.passengers?.map((person, index) => (
+                      <div
+                        key={index}
+                        className="bg-slate-800 p-3 rounded mt-2"
+                      >
+                        <p>
+                          <strong>Name:</strong> {person.name}
+                        </p>
+
+                        <p>
+                          <strong>Age:</strong> {person.age}
+                        </p>
+
+                        <p>
+                          <strong>Gender:</strong> {person.gender}
+                        </p>
+
+                        <p>
+                          <strong>Seat:</strong> {person.selectedSeat}
+                        </p>
+
+                        <p>
+                          <strong>Preference:</strong> {person.seatPreference}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
 
                   <p>
                     <strong>Email:</strong> {booking.email || "-"}
@@ -129,11 +156,6 @@ function Bookings() {
 
                   <p>
                     <strong>Phone:</strong> {booking.phone || "-"}
-                  </p>
-
-                  <p>
-                    <strong>Seat Preference:</strong>{" "}
-                    {booking.seatPreference || "-"}
                   </p>
 
                   <p>

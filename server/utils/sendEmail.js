@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (email, bookingId, passengerName) => {
+const sendEmail = async (email, bookingId, passengers) => {
   try {
     console.log("Sending email to:", email);
 
@@ -17,6 +17,15 @@ const sendEmail = async (email, bookingId, passengerName) => {
     await transporter.verify();
 
     console.log("SMTP Connection Successful");
+    const passengerList = passengers
+      .map(
+        (p, index) =>
+          `<li>
+        ${index + 1}. ${p.name}
+        (Seat: ${p.selectedSeat})
+      </li>`,
+      )
+      .join("");
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -28,8 +37,10 @@ const sendEmail = async (email, bookingId, passengerName) => {
             Booking Confirmed ✈️
           </h2>
 
-          <p>Hello <strong>${passengerName}</strong>,</p>
-
+         <p>
+Hello
+<strong>${passengers[0].name}</strong>,
+</p>
           <p>
             Your flight booking has been confirmed successfully.
           </p>
@@ -42,9 +53,12 @@ const sendEmail = async (email, bookingId, passengerName) => {
           </p>
 
           <p>
-            <strong>Passenger:</strong>
-            ${passengerName}
-          </p>
+  <strong>Passengers:</strong>
+</p>
+
+<ul>
+  ${passengerList}
+</ul>
 
           <p>
             Payment Status:

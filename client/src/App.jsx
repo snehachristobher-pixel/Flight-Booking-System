@@ -21,6 +21,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import FlightStatus from "./pages/FlightStatus";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import PassengerCount from "./pages/PassengerCount";
 
 function App() {
   return (
@@ -142,6 +143,7 @@ function App() {
         }
       />
       <Route path="/edit-booking/:id" element={<EditBooking />} />
+      <Route path="/passenger-count" element={<PassengerCount />} />
     </Routes>
   );
 }

@@ -125,39 +125,50 @@ function ReviewBooking() {
             <h2 className="text-2xl font-bold mb-4">Passenger Details 👤</h2>
 
             <div className="bg-slate-800 p-6 rounded-lg">
-              <p className="mb-2">
-                <strong>Name:</strong> {passenger.name}
+              <p className="mb-4">
+                <strong>Total Passengers:</strong> {passenger.passengerCount}
               </p>
 
-              <p className="mb-2">
-                <strong>Age:</strong> {passenger.age}
-              </p>
-              <p className="mb-2">
-                <strong>Passengers:</strong> {passenger.passengerCount}
-              </p>
-
-              <p className="mb-2">
-                <strong>Gender:</strong> {passenger.gender}
-              </p>
-
-              <p className="mb-2">
+              <p className="mb-4">
                 <strong>Email:</strong> {passenger.email}
               </p>
 
-              <p className="mb-2">
+              <p className="mb-6">
                 <strong>Phone:</strong> {passenger.phone}
               </p>
 
-              <p className="mb-2">
-                <strong>Seat Preference:</strong> {passenger.seatPreference}
-              </p>
+              {passenger.passengers.map((person, index) => (
+                <div
+                  key={index}
+                  className="border border-slate-600 rounded-lg p-4 mb-4"
+                >
+                  <h3 className="font-bold text-lg mb-3">
+                    Passenger {index + 1}
+                  </h3>
 
-              <p>
-                <strong>Selected Seat:</strong> {passenger.selectedSeat}
-              </p>
+                  <p>
+                    <strong>Name:</strong> {person.name}
+                  </p>
+
+                  <p>
+                    <strong>Age:</strong> {person.age}
+                  </p>
+
+                  <p>
+                    <strong>Gender:</strong> {person.gender}
+                  </p>
+
+                  <p>
+                    <strong>Seat Preference:</strong> {person.seatPreference}
+                  </p>
+
+                  <p>
+                    <strong>Seat Number:</strong> {person.selectedSeat}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-
           {/* Booking Checklist */}
           <div className="bg-slate-800 p-5 rounded-lg mb-8">
             <h3 className="text-lg font-bold mb-3">Booking Checklist ✅</h3>

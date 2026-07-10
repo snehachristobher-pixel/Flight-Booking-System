@@ -23,7 +23,7 @@ function FlightDetails() {
   const handleNext = () => {
     if (!flight) return;
 
-    navigate("/passenger-details");
+    navigate("/passenger-count");
   };
 
   if (!flight) {

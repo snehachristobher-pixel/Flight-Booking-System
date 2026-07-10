@@ -6,17 +6,24 @@ function PassengerDetails() {
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
+  const [seatError, setSeatError] = useState("");
+  const passengerCount = Number(localStorage.getItem("passengerCount")) || 1;
+  const [ageError, setAgeError] = useState("");
 
   const [form, setForm] = useState({
-    name: "",
-    age: "",
-    gender: "",
     email: "",
     phone: "",
-    seatPreference: "",
-    selectedSeat: "",
-    passengerCount: 1,
   });
+
+  const [passengers, setPassengers] = useState(
+    Array.from({ length: passengerCount }, () => ({
+      name: "",
+      age: "",
+      gender: "",
+      seatPreference: "",
+      selectedSeat: "",
+    })),
+  );
 
   const seats = [
     "A1",
@@ -37,12 +44,26 @@ function PassengerDetails() {
     "D4",
   ];
 
-  const handleSeatSelect = (seat) => {
-    setForm({
-      ...form,
-      selectedSeat: seat,
-    });
+  const handleSeatSelect = (index, seat) => {
+    const alreadySelected = passengers.some(
+      (passenger, passengerIndex) =>
+        passengerIndex !== index && passenger.selectedSeat === seat,
+    );
+
+    if (alreadySelected) {
+      setSeatError(`Seat ${seat} is already selected by another passenger.`);
+      return;
+    }
+
+    setSeatError("");
+
+    const updatedPassengers = [...passengers];
+
+    updatedPassengers[index].selectedSeat = seat;
+
+    setPassengers(updatedPassengers);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -51,7 +72,13 @@ function PassengerDetails() {
       [name]: value,
     });
   };
+  const handlePassengerChange = (index, field, value) => {
+    const updatedPassengers = [...passengers];
 
+    updatedPassengers[index][field] = value;
+
+    setPassengers(updatedPassengers);
+  };
   const handlePhoneChange = (e) => {
     const phone = e.target.value.replace(/\D/g, "");
 
@@ -62,48 +89,53 @@ function PassengerDetails() {
   };
 
   const handleNext = () => {
-    const cleanedForm = {
-      ...form,
-      name: form.name.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
-    };
+    for (const passenger of passengers) {
+      if (
+        !passenger.name ||
+        !passenger.age ||
+        !passenger.gender ||
+        !passenger.seatPreference ||
+        !passenger.selectedSeat
+      ) {
+        setError("Please complete all passenger details.");
+        return;
+      }
 
-    if (
-      !cleanedForm.name ||
-      !cleanedForm.age ||
-      !cleanedForm.gender ||
-      !cleanedForm.email ||
-      !cleanedForm.phone ||
-      !cleanedForm.seatPreference ||
-      !cleanedForm.selectedSeat
-    ) {
-      setError("Please complete all fields before proceeding.");
+      if (Number(passenger.age) < 1 || Number(passenger.age) > 120) {
+        setError("Please enter a valid age.");
+        return;
+      }
+    }
+
+    if (!form.email || !form.phone) {
+      setError("Please enter email and phone number.");
       return;
     }
 
     const emailRegex = /\S+@\S+\.\S+/;
 
-    if (!emailRegex.test(cleanedForm.email)) {
+    if (!emailRegex.test(form.email)) {
       setError("Please enter a valid email address.");
       return;
     }
 
     const phoneRegex = /^[0-9]{10}$/;
 
-    if (!phoneRegex.test(cleanedForm.phone)) {
+    if (!phoneRegex.test(form.phone)) {
       setError("Please enter a valid 10-digit phone number.");
-      return;
-    }
-
-    if (Number(cleanedForm.age) < 1 || Number(cleanedForm.age) > 120) {
-      setError("Please enter a valid age between 1 and 120.");
       return;
     }
 
     setError("");
 
-    localStorage.setItem("passengerDetails", JSON.stringify(cleanedForm));
+    localStorage.setItem(
+      "passengerDetails",
+      JSON.stringify({
+        ...form,
+        passengerCount,
+        passengers,
+      }),
+    );
 
     navigate("/review-booking");
   };
@@ -128,121 +160,121 @@ function PassengerDetails() {
             {error && (
               <div className="bg-red-600 p-3 rounded-lg mb-6">{error}</div>
             )}
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block mb-2 font-medium">Passenger Name</label>
-
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Enter full name"
-                  value={form.name}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded bg-slate-800"
-                />
+            {seatError && (
+              <div className="bg-red-900/40 border border-red-600 text-red-300 p-3 rounded-lg mb-4">
+                ⚠️ {seatError}
               </div>
+            )}
+            {passengers.map((passenger, index) => (
+              <div
+                key={index}
+                className="border border-slate-700 p-4 rounded-lg mb-6"
+              >
+                <h2 className="text-xl font-bold mb-4">
+                  Passenger {index + 1}
+                </h2>
 
-              <div>
-                <label className="block mb-2 font-medium">Age</label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="Passenger Name"
+                    value={passenger.name}
+                    onChange={(e) =>
+                      handlePassengerChange(index, "name", e.target.value)
+                    }
+                    className="w-full p-3 rounded bg-slate-800"
+                  />
 
-                <input
-                  type="number"
-                  name="age"
-                  placeholder="Enter age"
-                  value={form.age}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded bg-slate-800"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-medium">
-                  Number of Passengers
-                </label>
+                  <input
+                    type="number"
+                    placeholder="Age"
+                    min="1"
+                    max="120"
+                    value={passenger.age}
+                    onChange={(e) => {
+                      const value = e.target.value;
 
-                <select
-                  name="passengerCount"
-                  value={form.passengerCount}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded bg-slate-800"
-                >
-                  <option value="1">1 Passenger</option>
-                  <option value="2">2 Passengers</option>
-                  <option value="3">3 Passengers</option>
-                  <option value="4">4 Passengers</option>
-                  <option value="5">5 Passengers</option>
-                </select>
-              </div>
+                      if (Number(value) > 120) {
+                        setAgeError(
+                          "Age limit is 120. Please enter a valid age.",
+                        );
+                        return;
+                      }
 
-              <div>
-                <label className="block mb-2 font-medium">Gender</label>
+                      setAgeError("");
+                      handlePassengerChange(index, "age", value);
+                    }}
+                    className="w-full p-3 rounded bg-slate-800"
+                  />
+                  {ageError && (
+                    <div className="md:col-span-2">
+                      <p className="text-red-400 text-sm">{ageError}</p>
+                    </div>
+                  )}
+                  <select
+                    value={passenger.gender}
+                    onChange={(e) =>
+                      handlePassengerChange(index, "gender", e.target.value)
+                    }
+                    className="w-full p-3 rounded bg-slate-800"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
 
-                <select
-                  name="gender"
-                  value={form.gender}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded bg-slate-800"
-                >
-                  <option value="">Select Gender</option>
-
-                  <option value="Male">Male</option>
-
-                  <option value="Female">Female</option>
-
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">
-                  Seat Preference
-                </label>
-
-                <select
-                  name="seatPreference"
-                  value={form.seatPreference}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded bg-slate-800"
-                >
-                  <option value="">Select Seat Preference</option>
-
-                  <option value="Window">Window</option>
-
-                  <option value="Aisle">Aisle</option>
-
-                  <option value="Middle">Middle</option>
-                </select>
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="block mb-3 font-medium">
-                  Select Your Seat ✈️
-                </label>
-
-                <div className="grid grid-cols-4 gap-3">
-                  {seats.map((seat) => (
-                    <button
-                      key={seat}
-                      type="button"
-                      onClick={() => handleSeatSelect(seat)}
-                      className={`p-3 rounded-lg font-semibold transition ${
-                        form.selectedSeat === seat
-                          ? "bg-green-600 text-white"
-                          : "bg-slate-700 hover:bg-slate-600"
-                      }`}
-                    >
-                      {seat}
-                    </button>
-                  ))}
+                  <select
+                    value={passenger.seatPreference}
+                    onChange={(e) =>
+                      handlePassengerChange(
+                        index,
+                        "seatPreference",
+                        e.target.value,
+                      )
+                    }
+                    className="w-full p-3 rounded bg-slate-800"
+                  >
+                    <option value="">Seat Preference</option>
+                    <option value="Window">Window</option>
+                    <option value="Aisle">Aisle</option>
+                    <option value="Middle">Middle</option>
+                  </select>
                 </div>
 
-                {form.selectedSeat && (
-                  <p className="mt-3 text-green-400">
-                    Selected Seat: {form.selectedSeat}
+                <div className="grid grid-cols-4 gap-2 mt-4">
+                  {seats.map((seat) => {
+                    const isTaken = passengers.some(
+                      (p, i) => i !== index && p.selectedSeat === seat,
+                    );
+
+                    return (
+                      <button
+                        key={seat}
+                        type="button"
+                        disabled={isTaken}
+                        onClick={() => handleSeatSelect(index, seat)}
+                        className={`p-2 rounded ${
+                          passenger.selectedSeat === seat
+                            ? "bg-green-600"
+                            : isTaken
+                              ? "bg-red-700 cursor-not-allowed opacity-50"
+                              : "bg-slate-700"
+                        }`}
+                      >
+                        {seat}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {passenger.selectedSeat && (
+                  <p className="mt-2 text-green-400">
+                    Selected Seat: {passenger.selectedSeat}
                   </p>
                 )}
               </div>
-            </div>
+            ))}
             <div className="mt-6">
               <label className="block mb-2 font-medium">Email Address</label>
 

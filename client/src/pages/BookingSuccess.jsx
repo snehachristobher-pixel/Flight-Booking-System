@@ -44,18 +44,16 @@ function BookingSuccess() {
         await createFinalBooking({
           bookingId: id,
 
-          passengerName: passengerData.name,
-          age: passengerData.age,
-          gender: passengerData.gender,
+          passengers: passengerData.passengers,
+
           email: passengerData.email,
           phone: passengerData.phone,
-          seatPreference: passengerData.seatPreference,
 
           flightId: flightData._id,
-          seatNumber: passengerData.selectedSeat,
         });
-
-        await reduceSeatCount(flightData._id);
+        for (let i = 0; i < Number(passengerData.passengerCount); i++) {
+          await reduceSeatCount(flightData._id);
+        }
 
         console.log("Booking saved successfully");
       } catch (error) {
@@ -74,9 +72,9 @@ function BookingSuccess() {
     const doc = new jsPDF();
     const qrData = `
 Booking ID: ${bookingId}
-Passenger: ${passenger?.name}
+Passengers: ${passenger?.passengerCount}
 Airline: ${flight?.airline}
-Seat: ${passenger?.selectedSeat}
+Route: ${flight?.source} - ${flight?.destination}
 Status: Confirmed
 `;
 
@@ -88,11 +86,20 @@ Status: Confirmed
     doc.setFontSize(12);
 
     doc.text(`Booking ID: ${bookingId}`, 20, 40);
-    doc.text(`Passenger Name: ${passenger?.name || "-"}`, 20, 50);
-    doc.text(`Email: ${passenger?.email || "-"}`, 20, 60);
-    doc.text(`Phone: ${passenger?.phone || "-"}`, 20, 70);
-    doc.text(`Seat Preference: ${passenger?.seatPreference || "-"}`, 20, 80);
-    doc.text(`Seat Number: ${passenger?.selectedSeat || "-"}`, 20, 90);
+    doc.text(`Email: ${passenger?.email || "-"}`, 20, 50);
+    doc.text(`Phone: ${passenger?.phone || "-"}`, 20, 60);
+
+    let y = 80;
+
+    passenger?.passengers?.forEach((person, index) => {
+      doc.text(
+        `Passenger ${index + 1}: ${person.name} | Seat: ${person.selectedSeat}`,
+        20,
+        y,
+      );
+
+      y += 10;
+    });
 
     doc.text(`Airline: ${flight?.airline || "-"}`, 20, 100);
 
@@ -111,7 +118,7 @@ Status: Confirmed
     doc.setTextColor(0, 128, 0);
     doc.text("Payment Status: PAID ✓", 20, 170);
     doc.setTextColor(0, 0, 0);
-
+    doc.text(`Booking Date: ${new Date().toLocaleDateString()}`, 20, 175);
     doc.text(`Generated On: ${new Date().toLocaleString()}`, 20, 180);
     doc.addImage(qrImage, "PNG", 140, 30, 40, 40);
 
@@ -168,30 +175,35 @@ Status: Confirmed
             <div className="bg-slate-800/80 p-6 rounded-lg mb-6">
               <h3 className="text-xl font-bold mb-4">Passenger Details</h3>
 
-              <p>
-                <strong>Name:</strong> {passenger?.name || "-"}
+              <p className="mb-4">
+                <strong>Total Passengers:</strong>{" "}
+                {passenger?.passengerCount || 1}
               </p>
 
-              <p>
-                <strong>Age:</strong> {passenger?.age || "-"}
-              </p>
-
-              <p>
-                <strong>Gender:</strong> {passenger?.gender || "-"}
-              </p>
-
-              <p>
+              <p className="mb-2">
                 <strong>Email:</strong> {passenger?.email || "-"}
               </p>
 
-              <p>
+              <p className="mb-4">
                 <strong>Phone:</strong> {passenger?.phone || "-"}
               </p>
 
-              <p>
-                <strong>Seat Preference:</strong>{" "}
-                {passenger?.seatPreference || "-"}
-              </p>
+              {passenger?.passengers?.map((person, index) => (
+                <div
+                  key={index}
+                  className="border border-slate-600 rounded-lg p-4 mb-4"
+                >
+                  <h4 className="font-bold text-lg mb-2">
+                    Passenger {index + 1}
+                  </h4>
+
+                  <p>Name: {person.name}</p>
+                  <p>Age: {person.age}</p>
+                  <p>Gender: {person.gender}</p>
+                  <p>Seat Preference: {person.seatPreference}</p>
+                  <p>Seat Number: {person.selectedSeat}</p>
+                </div>
+              ))}
             </div>
 
             {/* Flight Details */}
@@ -208,7 +220,9 @@ Status: Confirmed
               </p>
 
               <p>
-                <strong>Price:</strong> ₹{flight?.price || "-"}
+                <strong>Total Fare:</strong> ₹
+                {(flight?.price || 0) * Number(passenger?.passengerCount || 1) +
+                  500}
               </p>
 
               <p>

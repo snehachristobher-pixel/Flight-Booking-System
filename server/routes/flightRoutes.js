@@ -164,22 +164,22 @@ router.post("/bookings/final", auth, async (req, res) => {
   try {
     const booking = await Booking.create({
       bookingId: req.body.bookingId,
-      passengerName: req.body.passengerName,
-      age: req.body.age,
-      gender: req.body.gender,
+
+      passengers: req.body.passengers,
+
       email: req.body.email,
       phone: req.body.phone,
-      seatPreference: req.body.seatPreference,
+
       userId: req.user.id,
       flightId: req.body.flightId,
-      seatNumber: req.body.seatNumber,
+
       paymentStatus: "Paid",
       status: "Confirmed",
     });
 
     console.log("Booking created");
 
-    await sendEmail(req.body.email, req.body.bookingId, req.body.passengerName);
+    await sendEmail(req.body.email, req.body.bookingId, req.body.passengers);
 
     console.log("Email function completed");
 

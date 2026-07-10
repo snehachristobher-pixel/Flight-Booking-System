@@ -6,19 +6,15 @@ const bookingSchema = new mongoose.Schema({
     unique: true,
   },
 
-  passengerName: {
-    type: String,
-    required: true,
-  },
-
-  age: {
-    type: Number,
-  },
-
-  gender: {
-    type: String,
-  },
-
+  passengers: [
+    {
+      name: String,
+      age: Number,
+      gender: String,
+      seatPreference: String,
+      selectedSeat: String,
+    },
+  ],
   email: {
     type: String,
   },
